@@ -27,7 +27,7 @@ public class SecurityConfig {
         return http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request->request
-                        .requestMatchers("/api/v1/register")
+                        .requestMatchers("/api/v1/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
@@ -35,11 +35,6 @@ public class SecurityConfig {
                 .build();
     }
 
-
-//    @Bean
-//   public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-//       return config.getAuthenticationManager();
-//    }
 
 
     @Bean
@@ -56,11 +51,7 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-//    @Bean
-//    public AuthenticationManager authenticationManager(
-//            AuthenticationConfiguration authConfig) throws Exception {
-//        return authConfig.getAuthenticationManager();
-//    }
+
       @Bean
       public PasswordEncoder passwordEncoder() {
            return new BCryptPasswordEncoder();
