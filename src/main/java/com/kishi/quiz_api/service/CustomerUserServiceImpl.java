@@ -2,6 +2,7 @@ package com.kishi.quiz_api.service;
 
 import com.kishi.quiz_api.entity.User;
 import com.kishi.quiz_api.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
