@@ -6,26 +6,31 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
+@Getter @Setter
 @NoArgsConstructor
 public class Question {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String q;
+    @Column(nullable = false)
+    private String questionText;  // renamed from 'q' for clarity
 
-    private String a;
-    private String b;
-    private String c;
-    private String d;
+    @Column(nullable = false)
+    private String optionA;      // renamed from 'a' for clarity
 
-    @ManyToOne
+    @Column(nullable = false)
+    private String optionB;
+
+    @Column(nullable = false)
+    private String optionC;
+
+    @Column(nullable = false)
+    private String optionD;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exam_id", nullable = false)
     private Exam exam;
-
-
 }
