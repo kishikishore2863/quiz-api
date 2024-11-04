@@ -1,15 +1,15 @@
 package com.kishi.quiz_api.controller;
 
 import com.kishi.quiz_api.dto.ExamRequest;
-import com.kishi.quiz_api.dto.QuestionRequest;
+import com.kishi.quiz_api.dto.ExamResponse;
 import com.kishi.quiz_api.entity.Exam;
-import com.kishi.quiz_api.entity.Question;
+import com.kishi.quiz_api.mapper.ExamMapper;
 import com.kishi.quiz_api.service.ExamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController
@@ -17,11 +17,11 @@ import java.util.List;
 public class ExamController {
 
     private ExamService examService;
-    private ExamRequest examRequest;
+    private ExamMapper examMapper;
 
-    public ExamController(ExamService examService,ExamRequest examRequest) {
+    public ExamController(ExamService examService, ExamMapper examMapper) {
         this.examService = examService;
-        this.examRequest=examRequest;
+        this.examMapper = examMapper;
     }
 
 //    @PostMapping("/addexam")
@@ -50,32 +50,13 @@ public class ExamController {
         return new ResponseEntity<Exam>(exam,HttpStatus.OK);
 
     }
-    @PostMapping("/addexam")
-    public ResponseEntity<Exam> createExam(@RequestBody ExamRequest examRequest) {
-        // Create an Exam object
-        Exam exam = new Exam();
-        exam.setExamCode(examRequest.getExam().getExamCode());
-        exam.setTitle(examRequest.getExam().getTitle());
-        exam.setDescription(examRequest.getExam().getDescription());
-        exam.setTimeDuration(examRequest.getExam().getTimeDuration());
-        exam.setTotalMarks(examRequest.getExam().getTotalMarks());
 
-        // Map QuestionRequest to Question entities
-        List<Question> questions = new ArrayList<>();
-        for (QuestionRequest questionRequest : examRequest.getQuestions()) {
-            Question question = new Question();
-            question.setQ(questionRequest.getQuestionText()); // Use the correct getter for question text
-            question.setA(questionRequest.getOptionA());
-            question.setB(questionRequest.getOptionB());
-            question.setC(questionRequest.getOptionC()); // Fixed from 'setB' to 'setC'
-            question.setD(questionRequest.getOptionD());
-            question.setExam(exam); // Set the exam relationship
-            questions.add(question);
-        }
 
-        // Call service to save exam and questions
-        Exam savedExam = examService.createExamWithQuestions(exam, questions);
-        return new ResponseEntity<>(savedExam, HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<ExamResponse> createExam( @RequestBody ExamRequest examRequest) {
+        Exam exam = examMapper.mapExamRequestToExam(examRequest);
+        Exam savedExam = examService.createExamWithQuestions(exam);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(examMapper.mapExamToResponse(savedExam));
     }
-
 }

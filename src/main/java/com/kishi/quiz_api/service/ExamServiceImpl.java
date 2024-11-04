@@ -2,6 +2,7 @@ package com.kishi.quiz_api.service;
 
 import com.kishi.quiz_api.entity.Exam;
 import com.kishi.quiz_api.entity.Question;
+import com.kishi.quiz_api.exception.ExamCodeAlreadyExistsException;
 import com.kishi.quiz_api.repository.ExamRepository;
 import com.kishi.quiz_api.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,13 @@ public class ExamServiceImpl implements ExamService{
 //        }
 //        return savedExam;
 //    }
+
+    public Exam createExamWithQuestions(Exam exam) {
+        if (examRepository.existsByExamCode(exam.getExamCode())) {
+            throw new ExamCodeAlreadyExistsException("Exam code already exists: " + exam.getExamCode());
+        }
+        return examRepository.save(exam);
+    }
 
 
 }

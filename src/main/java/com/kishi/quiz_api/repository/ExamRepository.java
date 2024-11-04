@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ExamRepository extends JpaRepository<Exam,Long> {
 
     Optional<Exam>  findByExamCode(String examCode);
+    boolean existsByExamCode(String examCode);
 }

@@ -13,4 +13,5 @@ public interface ExamService {
 
     public Exam getExam(String examCode);
 //    public Exam createExamWithQuestions(Exam exam, List<Question> questions);
+public Exam createExamWithQuestions(Exam exam);
 }

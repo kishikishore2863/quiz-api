@@ -32,7 +32,7 @@ public class Exam {
     private int totalMarks;
 
     @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Question> questions = new ArrayList<>();
+    private List<Question> questions=new ArrayList<>();
 
     // Helper method to manage bidirectional relationship
     public void addQuestion(Question question) {
